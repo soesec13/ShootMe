@@ -6,6 +6,7 @@ import at.shootme.beans.ViewDirection;
 import at.shootme.entity.EntityCategory;
 import at.shootme.entity.general.SimpleDrawableEntity;
 import at.shootme.entity.level.Platform;
+import at.shootme.entity.shot.Shot;
 import at.shootme.entity.shot.StandardShot;
 import at.shootme.networking.data.entity.EntityCreationMessage;
 import at.shootme.util.vectors.Vector2Util;
@@ -114,7 +115,7 @@ public class Player extends SimpleDrawableEntity {
 //        System.out.println(body.getLinearVelocity().x + "  " + body.getLinearVelocity().y);
     }
 
-    public StandardShot shootAt(Vector2 clickPosition) {
+    public Shot shootAt(Vector2 clickPosition) {
 
         Vector2 playerPosition = body.getPosition();
 
