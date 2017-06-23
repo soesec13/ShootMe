@@ -26,6 +26,8 @@ import static at.shootme.ShootMeConstants.PIXELS_TO_METERS;
  */
 public class Player extends SimpleDrawableEntity {
 
+    private boolean shooting;
+
     private static final int JUMP_SPEED = 30;
 
     private HorizontalMovementState horizontalMovementState = HorizontalMovementState.STOPPED;
@@ -231,6 +233,14 @@ public class Player extends SimpleDrawableEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isShooting() {
+        return shooting;
+    }
+
+    public void setShooting(boolean shooting) {
+        this.shooting = shooting;
     }
 
     public static class PlayerCreationMessage extends EntityCreationMessage {

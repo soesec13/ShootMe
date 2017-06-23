@@ -237,6 +237,14 @@ public class GameScreen implements Screen, InputProcessor, ShootMeConstants {
             }
 
         }
+        if(player.isShooting())
+        {
+            Vector2 worldClickPoint = Vector2Util.convertVector3To2(camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0)));
+            Shot shot = player.shootAt(worldClickPoint.scl(PIXELS_TO_METERS));
+            if (shot != null) {
+                level.add(shot);
+            }
+        }
     }
 
     private void renderGame() {
@@ -344,11 +352,7 @@ public class GameScreen implements Screen, InputProcessor, ShootMeConstants {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (SM.isClient()) {
-            Vector2 worldClickPoint = Vector2Util.convertVector3To2(camera.unproject(new Vector3(screenX, screenY, 0)));
-            Shot shot = player.shootAt(worldClickPoint.scl(PIXELS_TO_METERS));
-            if (shot != null) {
-                level.add(shot);
-            }
+            player.setShooting(true);
             return true;
         } else {
             return false;
@@ -357,6 +361,11 @@ public class GameScreen implements Screen, InputProcessor, ShootMeConstants {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        if(SM.isClient())
+        {
+            player.setShooting(false);
+            return true;
+        }
         return false;
     }
 
