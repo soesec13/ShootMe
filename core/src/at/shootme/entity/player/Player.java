@@ -8,8 +8,11 @@ import at.shootme.entity.general.SimpleDrawableEntity;
 import at.shootme.entity.level.Platform;
 import at.shootme.entity.shot.Shot;
 import at.shootme.entity.shot.StandardShot;
+import at.shootme.entity.weapon.AbstractWeapon;
+import at.shootme.entity.weapon.StandardWeapon;
 import at.shootme.networking.data.entity.EntityCreationMessage;
 import at.shootme.util.vectors.Vector2Util;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -34,7 +37,10 @@ public class Player extends SimpleDrawableEntity {
     private int score = 0;
     private String name;
 
+    private AbstractWeapon weapon;
+
     public Player() {
+
     }
 
     public void init(Vector2 position, World world) {
@@ -66,6 +72,8 @@ public class Player extends SimpleDrawableEntity {
 
         fixture = body.createFixture(fixtureDef);
         shape.dispose();
+
+        weapon = new StandardWeapon(this,world);
     }
 
     public HorizontalMovementState getHorizontalMovementState() {
@@ -117,6 +125,7 @@ public class Player extends SimpleDrawableEntity {
 
     public Shot shootAt(Vector2 clickPosition) {
 
+        /*
         Vector2 playerPosition = body.getPosition();
 
         float angle = Vector2Util.getAngleFromAToB(playerPosition, clickPosition);
@@ -131,6 +140,8 @@ public class Player extends SimpleDrawableEntity {
 //        System.out.println("playerPosition: "+ playerPosition + " --- " + "clickPosition: "+ clickPosition + " --- " + "initialShotVelocity: "+ initialShotVelocity);
 //        System.out.println("directionVector: "+ directionVector + " --- " + "angle: "+ angle + " --- ");
         return shot;
+        */
+        return weapon.fire(clickPosition);
     }
 
     private World getWorld() {
@@ -165,8 +176,10 @@ public class Player extends SimpleDrawableEntity {
 
     @Override
     public void draw(SpriteBatch batch) {
+        weapon.update(Gdx.graphics.getDeltaTime());
         sprite.setFlip(viewDirection == ViewDirection.RIGHT, false);
         super.draw(batch);
+        weapon.render();
         SM.gameScreen.getMediumFont().draw(batch, name, sprite.getX() + sprite.getWidth() / 2 - 30, sprite.getY() + sprite.getHeight() + 20);
     }
 
